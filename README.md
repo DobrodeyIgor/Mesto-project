@@ -12,7 +12,7 @@ Cервис Mesto: интерактивная страница, куда мож�
 
 **Проект**
 
-- [Ссылка на проект](https://github.com/DobrodeyIgor/mesto-project-bootcamp)
+- [Ссылка на проект](https://dobrodeyigor.github.io/mesto-project-bootcamp)
 
 **Figma**
 
