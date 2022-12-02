@@ -1,0 +1,10 @@
+.heart {
+  width: 22px;
+  height: 19px;
+  opacity: 1;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.heart:hover {
+  opacity: 0.5;
+}

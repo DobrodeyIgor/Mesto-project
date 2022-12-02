@@ -1,0 +1,10 @@
+.footer {
+  margin-top: 66px;
+  min-height: 78px;
+}
+@media (max-width: 767px) {
+  .footer {
+    margin-top: 48px;
+    min-height: 50px;
+  }
+}

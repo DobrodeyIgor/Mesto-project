@@ -1,0 +1,7 @@
+.elements__item-description {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 25px 21px 31px;
+  box-sizing: border-box;
+}

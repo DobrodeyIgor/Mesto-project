@@ -1,0 +1,10 @@
+.user-form {
+  width: 358px;
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 767px) {
+  .user-form {
+    width: 100%;
+  }
+}

@@ -1,0 +1,21 @@
+.popup__exit-button {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  opacity: 1;
+  transition: 0.4s;
+  cursor: pointer;
+}
+.popup__exit-button:hover {
+  opacity: 0.6;
+}
+@media (max-width: 767px) {
+  .popup__exit-button {
+    right: 0;
+    top: -36px;
+  }
+}

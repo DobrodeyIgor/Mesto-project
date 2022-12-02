@@ -1,0 +1,10 @@
+.profile__pen-icon {
+  width: 10px;
+  height: 10px;
+}
+@media (max-width: 767px) {
+  .profile__pen-icon {
+    width: 7.5px;
+    height: 7.5px;
+  }
+}
