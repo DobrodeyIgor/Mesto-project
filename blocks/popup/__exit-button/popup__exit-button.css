@@ -9,13 +9,24 @@
   opacity: 1;
   transition: 0.4s;
   cursor: pointer;
+  width: 32px;
+  height: 32px;
+  background-image: url(../../../images/exit.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 .popup__exit-button:hover {
   opacity: 0.6;
+}
+.popup__exit-button:focus {
+  outline: none;
 }
 @media (max-width: 767px) {
   .popup__exit-button {
     right: 0;
     top: -36px;
+    width: 20px;
+    height: 20px;
   }
 }

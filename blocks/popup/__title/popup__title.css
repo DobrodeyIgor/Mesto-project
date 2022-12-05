@@ -1,4 +1,4 @@
-.user-form__title {
+.popup__title {
   margin: 0;
   font-style: normal;
   font-weight: 900;
@@ -6,7 +6,7 @@
   line-height: 29px;
 }
 @media (max-width: 767px) {
-  .user-form__title {
+  .popup__title {
     font-size: 18px;
     line-height: 22px;
   }

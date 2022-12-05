@@ -8,6 +8,7 @@
   line-height: 17px;
   border: none;
   border-bottom: 1px solid #00000020;
+  box-sizing: border-box;
 }
 .text-field:focus {
   outline: none;

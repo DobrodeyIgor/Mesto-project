@@ -1,0 +1,23 @@
+.elements__favorite-button {
+  margin: 0;
+  padding: 0;
+  margin-left: auto;
+  border: none;
+  background-color: transparent;
+  flex: none;
+  width: 22px;
+  height: 19px;
+  background-image: url(../../../images/heart.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.elements__favorite-button:hover {
+  opacity: 0.5;
+}
+.elements__favorite-button:focus {
+  outline: none;
+}
