@@ -1,10 +1,13 @@
 .profile__info {
   color: white;
   margin-right: 30px;
+  max-width: calc(100% - 330px);
+  display: inline-block;
 }
 @media (max-width: 767px) {
   .profile__info {
     margin-top: 26px;
     margin-right: 0;
+    max-width: 100%;
   }
 }
