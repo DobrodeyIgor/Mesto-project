@@ -1,4 +1,4 @@
-.submit-button {
+.form__submit-button {
   color: white;
   font-style: normal;
   font-weight: 400;
@@ -12,13 +12,15 @@
   border-radius: 2px;
   cursor: pointer;
   transition: 0.4s;
+  margin-top: 48px;
 }
-.submit-button:hover {
+.form__submit-button:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
 @media (max-width: 767px) {
-  .submit-button {
+  .form__submit-button {
     font-size: 14px;
     line-height: 17px;
+    margin-top: 45px;
   }
 }

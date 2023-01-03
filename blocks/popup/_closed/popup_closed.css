@@ -1,0 +1,4 @@
+.popup_closed {
+  z-index: -1;
+  opacity: 0;
+}

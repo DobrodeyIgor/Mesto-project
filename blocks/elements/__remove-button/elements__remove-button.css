@@ -1,0 +1,26 @@
+.elements__remove-button {
+  margin: 0;
+  padding: 0;
+  margin-left: auto;
+  border: none;
+  background-color: transparent;
+  flex: none;
+  width: 18px;
+  height: 19px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-image: url(../../../images/trash.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.elements__remove-button:hover {
+  opacity: 0.5;
+}
+.elements__remove-button:focus {
+  outline: none;
+}

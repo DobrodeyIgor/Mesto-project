@@ -20,104 +20,102 @@
         />
         <div class="profile__info">
           <div class="profile__user-block">
-            <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <h1 class="profile__name" id="user-name"></h1>
             <button
               type="button"
               class="profile__button profile__button_move_edit"
+              id="edit-button"
             >
               <img
                 class="profile__pen-icon"
                 src="./images/pen.svg"
-                alt="редактировать"
+                alt="редактировать профиль"
               />
             </button>
           </div>
-          <p class="profile__status">Исследователь океана</p>
+          <p class="profile__status" id="user-status"></p>
         </div>
-        <button type="button" class="profile__button profile__button_move_add">
+        <button
+          type="button"
+          class="profile__button profile__button_move_add"
+          id="add-places-button"
+        >
           <img
             class="profile__plus-icon"
             src="./images/plus.svg"
-            alt="добавить профиль"
+            alt="добавить место"
           />
         </button>
       </section>
-      <section class="elements">
-        <div class="elements__item">
-          <img class="elements__image" src="./images/Лондон.jpg" alt="Лондон" />
-          <div class="elements__item-description">
-            <h2 class="elements__item-title" title="Лондон">Лондон</h2>
-            <button type="button" class="elements__favorite-button"></button>
-          </div>
-        </div>
-        <div class="elements__item">
-          <img class="elements__image" src="./images/Париж.jpg" alt="Париж" />
-          <div class="elements__item-description">
-            <h2 class="elements__item-title" title="Париж">Париж</h2>
-            <button type="button" class="elements__favorite-button"></button>
-          </div>
-        </div>
-        <div class="elements__item">
-          <img class="elements__image" src="./images/Москва.jpg" alt="Москва" />
-          <div class="elements__item-description">
-            <h2 class="elements__item-title" title="Москва">Москва</h2>
-            <button type="button" class="elements__favorite-button"></button>
-          </div>
-        </div>
-        <div class="elements__item">
-          <img
-            class="elements__image"
-            src="./images/Нью-Йорк.jpg"
-            alt="Нью-Йорк"
-          />
-          <div class="elements__item-description">
-            <h2 class="elements__item-title" title="Нью-Йорк">Нью-Йорк</h2>
-            <button type="button" class="elements__favorite-button"></button>
-          </div>
-        </div>
-        <div class="elements__item">
-          <img class="elements__image" src="./images/пекин.png" alt="Пекин" />
-          <div class="elements__item-description">
-            <h2 class="elements__item-title" title="Пекин">Пекин</h2>
-            <button type="button" class="elements__favorite-button"></button>
-          </div>
-        </div>
-        <div class="elements__item">
-          <img class="elements__image" src="./images/Сеул.png" alt="Сеул" />
-          <div class="elements__item-description">
-            <h2 class="elements__item-title" title="Сеул">Сеул</h2>
-            <button type="button" class="elements__favorite-button"></button>
-          </div>
-        </div>
-      </section>
+      <section class="elements" id="cards"></section>
     </main>
     <footer class="footer">
       <p class="footer__copyright">&#169; 2022 Mesto Russia</p>
     </footer>
-    <div class="popup">
+    <div class="popup" id="edit-popup">
       <div class="popup__container">
-        <button type="button" class="popup__exit-button"></button>
+        <button
+          type="button"
+          class="popup__exit-button"
+          id="edit-popup-close-button"
+        ></button>
         <h2 class="popup__title">Редактировать профиль</h2>
-        <form name="user-form" class="user-form">
+        <form name="user-form" class="form" id="edit-user-form">
           <input
             type="text"
-            class="text-field"
+            class="form__text-field"
             name="user-name"
             id="user-name"
-            value="Жак-Ив Кусто"
+            placeholder="Имя"
           />
           <input
             type="text"
-            class="text-field"
+            class="form__text-field"
             name="user-status"
             id="user-status"
-            value="Исследователь океана"
+            placeholder="Профессия"
           />
-          <button class="submit-button user-form__submit" type="submit">
-            Сохранить
-          </button>
+          <button class="form__submit-button" type="submit">Сохранить</button>
         </form>
       </div>
     </div>
+    <div class="popup" id="add-places-popup">
+      <div class="popup__container">
+        <button
+          type="button"
+          class="popup__exit-button"
+          id="add-places-popup-close-button"
+        ></button>
+        <h2 class="popup__title">Новое место</h2>
+        <form name="add-places-form" class="form" id="add-places-form">
+          <input
+            type="text"
+            class="form__text-field"
+            name="place-name"
+            id="place-name"
+            placeholder="Название"
+          />
+          <input
+            type="text"
+            class="form__text-field"
+            name="place-image"
+            id="place-image"
+            placeholder="Ссылка на картинку"
+          />
+          <button class="form__submit-button" type="submit">Сохранить</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup" id="popup-image">
+      <div class="popup__container popup__container_size_full">
+        <button
+          type="button"
+          class="popup__exit-button"
+          id="popup-image-close-button"
+        ></button>
+        <figure class="popup__figure" id="popup-image-figure"></figure>
+      </div>
+    </div>
+    <script src="./index.js"></script>
   </body>
 </html>
