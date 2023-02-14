@@ -10,6 +10,7 @@
   border: none;
   border-bottom: 1px solid #00000020;
   box-sizing: border-box;
+  position: relative;
 }
 .form__text-field:focus {
   outline: none;

@@ -6,4 +6,5 @@
   object-position: center top;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
 }

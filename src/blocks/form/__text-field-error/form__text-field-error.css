@@ -1,0 +1,13 @@
+.form__text-field-error {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  display: none;
+
+  color: #ff0000;
+}
