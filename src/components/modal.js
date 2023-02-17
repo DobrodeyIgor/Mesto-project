@@ -1,33 +1,39 @@
-function escapeVisior(evt, popup) {
+function handleEscape(evt) {
   if (evt.code === "Escape") {
-    closePopup(popup);
+    closeAllPopups();
   }
 }
 
-function handelClickPopupOverlay(popup) {
-  closePopup(popup);
-}
-
-function handelStopPropagation(evt) {
+function handleStopPropagation(evt) {
   evt.stopPropagation();
 }
 
 function closePopup(popupHTML) {
   popupHTML.classList.remove("popup_opened");
   const popupContainer = popupHTML.querySelector(".popup__container");
-  popupContainer.removeEventListener("click", handelStopPropagation);
-  popupHTML.removeEventListener("click", () =>
-    handelClickPopupOverlay(popupHTML)
-  );
-  window.removeEventListener("keyup", (evt) => escapeVisior(evt, popupHTML));
+  popupContainer.addEventListener("click", handleStopPropagation);
+  popupHTML.addEventListener("click", closeAllPopups);
+  window.addEventListener("keyup", handleEscape);
 }
 
 function openPopup(popupHTML) {
   popupHTML.classList.add("popup_opened");
   const popupContainer = popupHTML.querySelector(".popup__container");
-  popupContainer.addEventListener("click", handelStopPropagation);
-  popupHTML.addEventListener("click", () => handelClickPopupOverlay(popupHTML));
-  window.addEventListener("keyup", (evt) => escapeVisior(evt, popupHTML));
+  popupContainer.addEventListener("click", handleStopPropagation);
+  popupHTML.addEventListener("click", closeAllPopups);
+  window.addEventListener("keyup", handleEscape);
 }
 
-export { escapeVisior, handelClickPopupOverlay, closePopup, openPopup };
+function findOpenedPopups() {
+  const openedPopups = document.querySelectorAll(".popup_opened");
+  return Array.from(openedPopups);
+}
+
+function closeAllPopups() {
+  const openedPopups = findOpenedPopups();
+  openedPopups.forEach((popup) => {
+    closePopup(popup);
+  });
+}
+
+export { handleEscape, closeAllPopups, closePopup, openPopup };

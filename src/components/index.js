@@ -1,37 +1,53 @@
 import "../pages/index.css";
-import { hasInvalidInput, enableValidation } from "./validate.js";
+import { enableValidation } from "./validate.js";
 import { createCard } from "./card.js";
 import { closePopup, openPopup } from "./modal.js";
+import {
+  getInitialCards,
+  getMe,
+  editMe,
+  createNewCard,
+  editAvatar,
+} from "./api.js";
 
-const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
 const createPopupHTML = document.querySelector(".popup[data-type=create]");
 const editPopupHTML = document.querySelector(".popup[data-type=edit]");
 const imagePopupHTML = document.querySelector(".popup[data-type=img]");
+const avatarPopupHTML = document.querySelector(".popup[data-type=avatar]");
+
+const userNameHTML = document.querySelector(".profile__name");
+const userNameInput = document.querySelector("input[name=user-name");
+const userStatusHTML = document.querySelector(".profile__status");
+const userStatusInput = document.querySelector("input[name=user-status");
+
+const userAvatarHTML = document.querySelector(".profile__image");
+const userAvatarInput = document.querySelector("input[name=avatar-link]");
+
+const elementsHTML = document.querySelector(".elements");
+
+let meId = "";
+
+getMe().then((me) => {
+  userNameHTML.textContent = me.name;
+  userStatusHTML.textContent = me.about;
+  userAvatarHTML.src = me.avatar;
+  meId = me._id;
+  getInitialCards().then((initialCards) => {
+    initialCards.forEach((card) => {
+      const isOwner = me._id === card.owner._id;
+      const cardHTML = createCard(
+        card.name,
+        card.link,
+        imagePopupHTML,
+        card._id,
+        me._id,
+        card.likes,
+        isOwner
+      );
+      elementsHTML.append(cardHTML);
+    });
+  });
+});
 
 const editPopupButtonHTML = document.querySelector(
   ".profile__button_move_edit"
@@ -48,8 +64,16 @@ const createPopupExitButtonHTML = document.querySelector(
 const imagePopupExitButtonHTML = document.querySelector(
   ".popup__exit-button[data-type=img]"
 );
+const avatarPopupButtonHTML = document.querySelector(".profile__image-wrapper");
+const avatarPopupExitButtonHTML = document.querySelector(
+  ".popup__exit-button[data-type=avatar]"
+);
 
-editPopupButtonHTML.addEventListener("click", () => openPopup(editPopupHTML));
+editPopupButtonHTML.addEventListener("click", () => {
+  openPopup(editPopupHTML);
+  userNameInput.value = userNameHTML.textContent;
+  userStatusInput.value = userStatusHTML.textContent;
+});
 editPopupExitButtonHTML.addEventListener("click", () =>
   closePopup(editPopupHTML)
 );
@@ -65,29 +89,45 @@ imagePopupExitButtonHTML.addEventListener("click", () =>
   closePopup(imagePopupHTML)
 );
 
-const elementsHTML = document.querySelector(".elements");
+avatarPopupButtonHTML.addEventListener("click", () =>
+  openPopup(avatarPopupHTML)
+);
 
-initialCards.forEach((card) => {
-  const cardHTML = createCard(card.name, card.link, imagePopupHTML);
-  elementsHTML.append(cardHTML);
-});
-
-const userNameHTML = document.querySelector(".profile__name");
-const userNameInput = document.querySelector("input[name=user-name");
-const userStatusHTML = document.querySelector(".profile__status");
-const userStatusInput = document.querySelector("input[name=user-status");
-
-userNameInput.value = userNameHTML.textContent;
-userStatusInput.value = userStatusHTML.textContent;
+avatarPopupExitButtonHTML.addEventListener("click", () =>
+  closePopup(avatarPopupHTML)
+);
 
 const userFormHTML = document.querySelector("form[data-type=edit]");
 userFormHTML.addEventListener("submit", handleUserFormSubmit);
+
+const userFormSubmitButton = userFormHTML.querySelector(".form__submit-button");
 
 const cardNameInput = document.querySelector("input[name=place-name]");
 const cardLinkInput = document.querySelector("input[name=place-image]");
 
 const cardFormHTML = document.querySelector("form[data-type=create]");
 cardFormHTML.addEventListener("submit", handleCardFormSubmit);
+
+const cardFormSubmitButton = cardFormHTML.querySelector(".form__submit-button");
+
+const avatarFormHTML = document.querySelector("form[data-type=avatar]");
+avatarFormHTML.addEventListener("submit", handleAvatarFormSubmit);
+
+const avatarFormSubmitButton = avatarFormHTML.querySelector(
+  ".form__submit-button"
+);
+
+function makeButtonDownloadable(button) {
+  button.disabled = true;
+  button.textContent = "Сохранение...";
+  button.classList.add("form__submit-button_inactive");
+}
+
+function makeButtonLoaded(button) {
+  button.disabled = false;
+  button.textContent = "Сохранить";
+  button.classList.remove("form__submit-button_inactive");
+}
 
 enableValidation({
   formSelector: ".form",
@@ -98,32 +138,50 @@ enableValidation({
   errorClass: "form__text-field-error_active",
 });
 
+function handleAvatarFormSubmit(evt) {
+  evt.preventDefault();
+  makeButtonDownloadable(avatarFormSubmitButton);
+  const body = { avatar: userAvatarInput.value };
+  editAvatar(body)
+    .then((res) => {
+      userAvatarHTML.src = userAvatarInput.value;
+    })
+    .finally(() => {
+      makeButtonLoaded(avatarFormSubmitButton);
+      closePopup(avatarPopupHTML);
+    });
+}
+
 function handleUserFormSubmit(evt) {
   evt.preventDefault();
-  const inputList = Array.from(
-    userFormHTML.querySelectorAll(`.form__text-field`)
-  );
-  const isInvalid = hasInvalidInput(inputList);
-  if (!isInvalid) {
-    userNameHTML.textContent = userNameInput.value;
-    userStatusHTML.textContent = userStatusInput.value;
-    closePopup(editPopupHTML);
-  }
+  makeButtonDownloadable(userFormSubmitButton);
+  const body = { name: userNameInput.value, about: userStatusInput.value };
+  editMe(body)
+    .then((res) => {
+      userNameHTML.textContent = res.name;
+      userStatusHTML.textContent = res.about;
+    })
+    .finally(() => {
+      makeButtonLoaded(userFormSubmitButton);
+      closePopup(editPopupHTML);
+    });
 }
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  const inputList = Array.from(
-    cardFormHTML.querySelectorAll(`.form__text-field`)
-  );
-  const isInvalid = hasInvalidInput(inputList);
-  if (!isInvalid) {
-    const name = cardNameInput.value;
-    const link = cardLinkInput.value;
-    const newCard = createCard(name, link, imagePopupHTML);
-    elementsHTML.prepend(newCard);
-    closePopup(createPopupHTML);
-    cardNameInput.value = "";
-    cardLinkInput.value = "";
-  }
+  makeButtonDownloadable(cardFormSubmitButton);
+  const body = { name: cardNameInput.value, link: cardLinkInput.value };
+  createNewCard(body)
+    .then((res) => {
+      const name = res.name;
+      const link = res.link;
+      const newCard = createCard(name, link, imagePopupHTML, res._id, meId);
+      elementsHTML.prepend(newCard);
+      cardNameInput.value = "";
+      cardLinkInput.value = "";
+    })
+    .finally(() => {
+      makeButtonLoaded(cardFormSubmitButton);
+      closePopup(createPopupHTML);
+    });
 }
