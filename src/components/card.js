@@ -8,6 +8,7 @@ import { openPopup } from "./modal.js";
 
 const figure = document.querySelector(".popup__figure");
 const figureImage = figure.querySelector(".popup__figure-image");
+const figureCaption = figure.querySelector(".popup__figure-caption");
 
 const templateCard = document.querySelector("#card");
 
@@ -65,36 +66,43 @@ function createCard(
   return element;
 }
 
-function toggleLike(button, counterElement, activeClass, meId, cardId) {
-  getInitialCards().then((initialCards) => {
-    const card = initialCards.find((item) => item._id === cardId);
-    let isLiked = isFavorite(card.likes, meId);
-    if (isLiked) {
-      likeCardRemove(cardId).then((res) => {
-        decrementLike(counterElement);
-        makeFavoriteButtonUnfilled(button, activeClass);
-      });
-    } else {
-      likeCard(cardId).then((res) => {
-        incrementLike(counterElement);
-        makeFavoriteButtonFilled(button, activeClass);
-      });
-    }
-  });
+function toggleLike(button, likesCounter, activeClass, meId, cardId) {
+  getInitialCards()
+    .then((initialCards) => {
+      const card = initialCards.find((item) => item._id === cardId);
+      const isLiked = isFavorite(card.likes, meId);
+      if (isLiked) {
+        likeCardRemove(cardId).then((res) => {
+          decrementLike(likesCounter, res);
+          makeFavoriteButtonUnfilled(button, activeClass);
+        });
+      } else {
+        likeCard(cardId).then((res) => {
+          incrementLike(likesCounter, res);
+          makeFavoriteButtonFilled(button, activeClass);
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 function removeCard(evt, id) {
   evt.stopPropagation();
-  deleteCard(id).then((res) => {
-    if (res) {
-      const parent = evt.target.closest(".elements__item");
-      parent.remove();
-    }
-  });
+  deleteCard(id)
+    .then((res) => {
+      if (res) {
+        const parent = evt.target.closest(".elements__item");
+        parent.remove();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 function fillFigure(title, link) {
-  const figureCaption = figure.querySelector(".popup__figure-caption");
   figureCaption.textContent = title;
   figureImage.alt = title;
   figureImage.src = link;
@@ -104,12 +112,12 @@ function isFavorite(likes, meId) {
   return likes.findIndex((like) => like._id === meId) !== -1;
 }
 
-function incrementLike(counterElement) {
-  counterElement.textContent = Number(counterElement.textContent) + 1;
+function incrementLike(likesCounter, res) {
+  likesCounter.textContent = res.likes.length;
 }
 
-function decrementLike(counterElement) {
-  counterElement.textContent = Number(counterElement.textContent) - 1;
+function decrementLike(likesCounter, res) {
+  likesCounter.textContent = res.likes.length;
 }
 
 function makeFavoriteButtonFilled(button, activeClass) {

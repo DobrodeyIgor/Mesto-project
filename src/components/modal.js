@@ -10,18 +10,17 @@ function handleStopPropagation(evt) {
 
 function closePopup(popupHTML) {
   popupHTML.classList.remove("popup_opened");
-  const popupContainer = popupHTML.querySelector(".popup__container");
-  popupContainer.addEventListener("click", handleStopPropagation);
-  popupHTML.addEventListener("click", closeAllPopups);
-  window.addEventListener("keyup", handleEscape);
 }
 
 function openPopup(popupHTML) {
   popupHTML.classList.add("popup_opened");
   const popupContainer = popupHTML.querySelector(".popup__container");
   popupContainer.addEventListener("click", handleStopPropagation);
+  popupContainer.removeEventListener("click", handleStopPropagation);
   popupHTML.addEventListener("click", closeAllPopups);
+  popupHTML.removeEventListener("click", closeAllPopups);
   window.addEventListener("keyup", handleEscape);
+  window.removeEventListener("keyup", handleEscape);
 }
 
 function findOpenedPopups() {

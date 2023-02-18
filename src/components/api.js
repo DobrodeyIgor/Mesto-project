@@ -1,3 +1,5 @@
+import { request } from "./utils.js";
+
 const config = {
   baseUrl: "https://mesto.nomoreparties.co/v1/wbf-cohort-5",
   headers: {
@@ -7,128 +9,58 @@ const config = {
 };
 
 export const getInitialCards = () => {
-  return fetch(`${config.baseUrl}/cards`, { headers: config.headers })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => result)
-    .catch((err) => {
-      console.log(err);
-    });
+  return request(`${config.baseUrl}/cards`, { headers: config.headers }).then(
+    (result) => result
+  );
 };
 
 export const createNewCard = (body) => {
-  return fetch(`${config.baseUrl}/cards`, {
+  return request(`${config.baseUrl}/cards`, {
     headers: config.headers,
     method: "POST",
     body: JSON.stringify(body),
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => result)
-    .catch((err) => {
-      console.log(err);
-    });
+  }).then((result) => result);
 };
 
 export const deleteCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+  return request(`${config.baseUrl}/cards/${cardId}`, {
     headers: config.headers,
     method: "DELETE",
-  })
-    .then((res) => res.ok)
-    .catch((err) => {
-      console.log(err);
-    });
+  });
 };
 
 export const likeCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+  return request(`${config.baseUrl}/cards/likes/${cardId}`, {
     headers: config.headers,
     method: "PUT",
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => result)
-    .catch((err) => {
-      console.log(err);
-    });
+  }).then((result) => result);
 };
 
 export const likeCardRemove = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+  return request(`${config.baseUrl}/cards/likes/${cardId}`, {
     headers: config.headers,
     method: "DELETE",
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => result)
-    .catch((err) => {
-      console.log(err);
-    });
+  }).then((result) => result);
 };
 
 export const getMe = () => {
-  return fetch(`${config.baseUrl}/users/me`, { headers: config.headers })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => result)
-    .catch((err) => {
-      console.log(err);
-    });
+  return request(`${config.baseUrl}/users/me`, {
+    headers: config.headers,
+  }).then((result) => result);
 };
 
 export const editMe = (body) => {
-  return fetch(`${config.baseUrl}/users/me`, {
+  return request(`${config.baseUrl}/users/me`, {
     headers: config.headers,
     method: "PATCH",
     body: JSON.stringify(body),
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => result)
-    .catch((err) => {
-      console.log(err);
-    });
+  }).then((result) => result);
 };
 
 export const editAvatar = (body) => {
-  return fetch(`${config.baseUrl}/users/me/avatar`, {
+  return request(`${config.baseUrl}/users/me/avatar`, {
     headers: config.headers,
     method: "PATCH",
     body: JSON.stringify(body),
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => result)
-    .catch((err) => {
-      console.log(err);
-    });
+  }).then((result) => result);
 };

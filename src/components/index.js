@@ -25,29 +25,37 @@ const userAvatarInput = document.querySelector("input[name=avatar-link]");
 
 const elementsHTML = document.querySelector(".elements");
 
-let meId = "";
+const meId = [];
 
-getMe().then((me) => {
-  userNameHTML.textContent = me.name;
-  userStatusHTML.textContent = me.about;
-  userAvatarHTML.src = me.avatar;
-  meId = me._id;
-  getInitialCards().then((initialCards) => {
-    initialCards.forEach((card) => {
-      const isOwner = me._id === card.owner._id;
-      const cardHTML = createCard(
-        card.name,
-        card.link,
-        imagePopupHTML,
-        card._id,
-        me._id,
-        card.likes,
-        isOwner
-      );
-      elementsHTML.append(cardHTML);
-    });
+getMe()
+  .then((me) => {
+    userNameHTML.textContent = me.name;
+    userStatusHTML.textContent = me.about;
+    userAvatarHTML.src = me.avatar;
+    meId[0] = me._id;
+    getInitialCards()
+      .then((initialCards) => {
+        initialCards.forEach((card) => {
+          const isOwner = me._id === card.owner._id;
+          const cardHTML = createCard(
+            card.name,
+            card.link,
+            imagePopupHTML,
+            card._id,
+            me._id,
+            card.likes,
+            isOwner
+          );
+          elementsHTML.append(cardHTML);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  })
+  .catch((err) => {
+    console.log(err);
   });
-});
 
 const editPopupButtonHTML = document.querySelector(
   ".profile__button_move_edit"
@@ -145,10 +153,13 @@ function handleAvatarFormSubmit(evt) {
   editAvatar(body)
     .then((res) => {
       userAvatarHTML.src = userAvatarInput.value;
+      closePopup(avatarPopupHTML);
+    })
+    .catch((err) => {
+      console.log(err);
     })
     .finally(() => {
       makeButtonLoaded(avatarFormSubmitButton);
-      closePopup(avatarPopupHTML);
     });
 }
 
@@ -160,10 +171,13 @@ function handleUserFormSubmit(evt) {
     .then((res) => {
       userNameHTML.textContent = res.name;
       userStatusHTML.textContent = res.about;
+      closePopup(editPopupHTML);
+    })
+    .catch((err) => {
+      console.log(err);
     })
     .finally(() => {
       makeButtonLoaded(userFormSubmitButton);
-      closePopup(editPopupHTML);
     });
 }
 
@@ -175,13 +189,16 @@ function handleCardFormSubmit(evt) {
     .then((res) => {
       const name = res.name;
       const link = res.link;
-      const newCard = createCard(name, link, imagePopupHTML, res._id, meId);
+      const newCard = createCard(name, link, imagePopupHTML, res._id, meId[0]);
       elementsHTML.prepend(newCard);
       cardNameInput.value = "";
       cardLinkInput.value = "";
+      closePopup(createPopupHTML);
+    })
+    .catch((err) => {
+      console.log(err);
     })
     .finally(() => {
       makeButtonLoaded(cardFormSubmitButton);
-      closePopup(createPopupHTML);
     });
 }
