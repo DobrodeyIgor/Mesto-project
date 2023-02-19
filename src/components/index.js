@@ -1,5 +1,5 @@
 import "../pages/index.css";
-import { enableValidation } from "./validate.js";
+import { enableValidation, disabledButton } from "./validate.js";
 import { createCard } from "./card.js";
 import { closePopup, openPopup } from "./modal.js";
 import {
@@ -14,6 +14,8 @@ const createPopupHTML = document.querySelector(".popup[data-type=create]");
 const editPopupHTML = document.querySelector(".popup[data-type=edit]");
 const imagePopupHTML = document.querySelector(".popup[data-type=img]");
 const avatarPopupHTML = document.querySelector(".popup[data-type=avatar]");
+
+const saveCardButton = createPopupHTML.querySelector(".form__submit-button");
 
 const userNameHTML = document.querySelector(".profile__name");
 const userNameInput = document.querySelector("input[name=user-name");
@@ -88,7 +90,7 @@ editPopupExitButtonHTML.addEventListener("click", () =>
 
 createPopupButtonHTML.addEventListener("click", () => {
   openPopup(createPopupHTML);
-  bindEnableValidation();
+  disabledButton(saveCardButton, "form__submit-button_inactive");
 });
 
 createPopupExitButtonHTML.addEventListener("click", () =>
@@ -139,18 +141,14 @@ function makeButtonLoaded(button) {
   button.classList.remove("form__submit-button_inactive");
 }
 
-bindEnableValidation();
-
-function bindEnableValidation() {
-  enableValidation({
-    formSelector: ".form",
-    inputSelector: ".form__text-field",
-    submitButtonSelector: ".form__submit-button",
-    inactiveButtonClass: "form__submit-button_inactive",
-    inputErrorClass: "form__text-field_type_error",
-    errorClass: "form__text-field-error_active",
-  });
-}
+enableValidation({
+  formSelector: ".form",
+  inputSelector: ".form__text-field",
+  submitButtonSelector: ".form__submit-button",
+  inactiveButtonClass: "form__submit-button_inactive",
+  inputErrorClass: "form__text-field_type_error",
+  errorClass: "form__text-field-error_active",
+});
 
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
