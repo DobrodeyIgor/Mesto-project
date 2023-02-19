@@ -86,9 +86,11 @@ editPopupExitButtonHTML.addEventListener("click", () =>
   closePopup(editPopupHTML)
 );
 
-createPopupButtonHTML.addEventListener("click", () =>
-  openPopup(createPopupHTML)
-);
+createPopupButtonHTML.addEventListener("click", () => {
+  openPopup(createPopupHTML);
+  bindEnableValidation();
+});
+
 createPopupExitButtonHTML.addEventListener("click", () =>
   closePopup(createPopupHTML)
 );
@@ -137,21 +139,25 @@ function makeButtonLoaded(button) {
   button.classList.remove("form__submit-button_inactive");
 }
 
-enableValidation({
-  formSelector: ".form",
-  inputSelector: ".form__text-field",
-  submitButtonSelector: ".form__submit-button",
-  inactiveButtonClass: "form__submit-button_inactive",
-  inputErrorClass: "form__text-field_type_error",
-  errorClass: "form__text-field-error_active",
-});
+bindEnableValidation();
+
+function bindEnableValidation() {
+  enableValidation({
+    formSelector: ".form",
+    inputSelector: ".form__text-field",
+    submitButtonSelector: ".form__submit-button",
+    inactiveButtonClass: "form__submit-button_inactive",
+    inputErrorClass: "form__text-field_type_error",
+    errorClass: "form__text-field-error_active",
+  });
+}
 
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
   makeButtonDownloadable(avatarFormSubmitButton);
   const body = { avatar: userAvatarInput.value };
   editAvatar(body)
-    .then((res) => {
+    .then(() => {
       userAvatarHTML.src = userAvatarInput.value;
       closePopup(avatarPopupHTML);
     })
@@ -191,8 +197,7 @@ function handleCardFormSubmit(evt) {
       const link = res.link;
       const newCard = createCard(name, link, imagePopupHTML, res._id, meId[0]);
       elementsHTML.prepend(newCard);
-      cardNameInput.value = "";
-      cardLinkInput.value = "";
+      cardFormHTML.reset();
       closePopup(createPopupHTML);
     })
     .catch((err) => {
